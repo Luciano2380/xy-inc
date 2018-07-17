@@ -2,6 +2,7 @@ package br.com.xyinc.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.xyinc.entidade.Poi;
@@ -26,20 +28,19 @@ import br.com.xyinc.service.IPoiService;
  *
  */
 @Controller
-@RestController
-@RequestMapping("/pois")
+@RequestMapping("/api")
 public class PoiController {
 	@Autowired
 	private IPoiService service;
 	
 	/**
-	 * Método do controller salvar Cliente
+	 * Método do controller salvar POI
 	 * @param cliente
 	 * @return
 	 */
-	@PostMapping
-	public ResponseEntity<Poi> salvar(@RequestBody Poi p){
-		Poi poi = null;
+	@PostMapping("/pois")
+	public ResponseEntity<Poi> salvar(@RequestBody @Valid Poi p){
+		Poi poi = null;	
 		try {
 			poi = service.salvar(p);
 		} catch (ServiceException e) {			
@@ -52,27 +53,27 @@ public class PoiController {
 	 * Método Controller retorna todos POI da base de dados
 	 * @return
 	 */
-	@GetMapping
-	public List<Poi> listarTodos(){
+	@GetMapping("/pois")
+	public ResponseEntity<List<Poi>> listarTodos(){
 		List<Poi> pois = null;
 		try {
 			pois = service.listarTodos();
 		} catch (ServiceException e) {			
 			e.printStackTrace();
 		}
-		return pois;
+		return new ResponseEntity<List<Poi>>(pois,HttpStatus.OK);
 		
 	}
 	
-	@GetMapping("/{coord_x}/{coord_y}/{d_max}")
-	public List<Poi> listarPorProximidade(@PathParam("coord_x") Integer coord_x,@PathParam("coord_y") Integer coord_y, @PathParam("d_max") Integer d_max){
+	@GetMapping("/pois/{coord_x}/{coord_y}/{d_max}")
+	public ResponseEntity<List<Poi>> listarPorProximidade(@PathVariable(value="coord_x") Integer coord_x,@PathVariable(value="coord_y") Integer coord_y, @PathVariable(value="d_max") Integer d_max){
 		List<Poi> pois = null;
 		try {
-			pois = service.listarPorProximidade(coord_x, coord_y, d_max);
+			pois = service.listarPorProximidade(coord_x, null, null);
 		} catch (ServiceException e) {			
 			e.printStackTrace();
 		}
-		return pois;
+		return new ResponseEntity<List<Poi>>(pois,HttpStatus.OK);
 		
 	}
 
