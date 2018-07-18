@@ -11,7 +11,12 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-
+/**
+ * Entidade POI
+ * 
+ * @author Luciano
+ *
+ */
 @Entity
 @Table(name = "POIS")
 public class Poi implements Serializable {

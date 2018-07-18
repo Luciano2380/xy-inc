@@ -3,11 +3,12 @@ package br.com.xyinc.controller;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,28 +16,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.xyinc.entidade.Poi;
-import br.com.xyinc.exception.ServiceException;
 import br.com.xyinc.service.IPoiService;
 
 /**
  * Classe de Controller do Poi Faz a ligação do front-end com back-end
  * 
- * @author luciano
+ * @author Luciano
  *
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/pois")
+@Validated
 public class PoiController {
 	@Autowired
 	private IPoiService service;
 
 	/**
 	 * Método do controller salvar POI
-	 * 
-	 * @param cliente
 	 * @return
 	 */
-	@RequestMapping(value = "/pois", method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Poi> salvar(@RequestBody @Valid Poi p) {
 		Poi poi = service.salvar(p);
 		return ResponseEntity.ok(poi);
@@ -46,20 +45,26 @@ public class PoiController {
 	/**
 	 * Método Controller retorna todos POI da base de dados
 	 * 
-	 * @return
+	 * @return List<Poi>
 	 */
-	@RequestMapping(value = "/pois/listarTodos", method = RequestMethod.GET)
+	@RequestMapping(value = "/listarTodos", method = RequestMethod.GET)
 	public ResponseEntity<List<Poi>> listarTodos() {
 		List<Poi> pois = service.listarTodos();
-		return !pois.isEmpty()? ResponseEntity.ok(pois):ResponseEntity.notFound().build();
+		return ResponseEntity.ok(pois);
 
 	}
 
-	@RequestMapping(value = "/pois/listarProximidade", method = RequestMethod.GET)
-	public ResponseEntity<List<Poi>> listarPorProximidade(@RequestParam(value = "coord_x") Integer coord_x,
-			@RequestParam(value = "coord_y") Integer coord_y, @RequestParam(value = "d_max") Integer d_max) {
+	/**
+	 * Método Controller retorna todos POI da base de dados 
+	 * de acordo com  as coordenadas e distância estabelecida	 * 
+	 * @return List<Poi>
+	 */
+	@RequestMapping(value = "/listarProximidade", method = RequestMethod.GET)
+	public ResponseEntity<List<Poi>> listarPorProximidade(@NotNull(message = "{coordy.nao.vazio}") @Min(value = 0, message = "{coordx.inteiro}")@RequestParam(value = "coord_x") Integer coord_x,			
+			@NotNull(message = "{coordy.nao.vazio}") @Min(value = 0, message = "{coordy.inteiro}") @RequestParam(value = "coord_y") Integer coord_y,
+			@NotNull(message = "{dmax.nao.vazio}") @Min(value = 0, message = "{dmax.inteiro}") @RequestParam(value = "d_max") Integer d_max) {
 		List<Poi> pois = service.listarPorProximidade(coord_x, coord_y, d_max);
-		return !pois.isEmpty()? ResponseEntity.ok(pois):ResponseEntity.notFound().build();
+		return ResponseEntity.ok(pois);
 
 	}
 
