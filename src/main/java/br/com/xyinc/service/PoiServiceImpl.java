@@ -16,17 +16,17 @@ public class PoiServiceImpl implements IPoiService {
 	PoiRepository poiRepository;
 
 	@Override
-	public Poi salvar(Poi t) throws ServiceException {	
+	public Poi salvar(Poi t) {	
 		return poiRepository.save(t);
 	}
 
 	@Override
-	public List<Poi> listarTodos() throws ServiceException {		
+	public List<Poi> listarTodos(){		
 		return poiRepository.findAll();
 	}
 
 	@Override
-	public List<Poi> listarPorProximidade(Integer coord_x, Integer coord_y, Integer d_max) throws ServiceException {
+	public List<Poi> listarPorProximidade(Integer coord_x, Integer coord_y, Integer d_max) {
 		List<Poi> listPoisProximos = new ArrayList<Poi>();
 		List<Poi> listaPois = listarTodos();
 		

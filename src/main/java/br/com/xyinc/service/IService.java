@@ -6,8 +6,8 @@ import br.com.xyinc.exception.ServiceException;
 
 public interface IService<T> {
 
-	T salvar(T t) throws ServiceException;
+	T salvar(T t);
 	
-	List<T> listarTodos() throws ServiceException;
+	List<T> listarTodos();
 	
 }
