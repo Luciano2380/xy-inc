@@ -82,6 +82,8 @@ public class XyIncApplicationTests {
         List<Poi> poi = MAPPER.readValue(response, MAPPER.getTypeFactory().constructCollectionType(List.class, Poi.class));
     	Assert.assertEquals("Lanchonete", poi.get(0).getNome());
     	Assert.assertEquals("Posto", poi.get(1).getNome());
+    	Assert.assertEquals("Joalheria", poi.get(2).getNome());
+    	Assert.assertEquals("Floricultura", poi.get(3).getNome());
     }
     /**
      * Testa a Requisição Get, o metodo ListarProximidade    
@@ -95,6 +97,12 @@ public class XyIncApplicationTests {
     	Assert.assertEquals("Joalheria", poi.get(1).getNome());
     	Assert.assertEquals("Pub", poi.get(2).getNome());
     	Assert.assertEquals("Supermercado", poi.get(3).getNome());
+    	
+    	String response2 = restTemplate.getForObject(BASE_PATH + "/listarProximidade?coord_x=30&coord_y=15&d_max=10", String.class);
+        List<Poi> poi2 = MAPPER.readValue(response2, MAPPER.getTypeFactory().constructCollectionType(List.class, Poi.class));
+    	Assert.assertEquals("Lanchonete", poi2.get(0).getNome());
+    	Assert.assertEquals("Posto", poi2.get(1).getNome());
+    	
     }
 
 
