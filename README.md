@@ -2,7 +2,8 @@
 1) Clonar o projeto no GitHub
 2) Após clonar o projeto, abrir o projeto com as Ide Eclipse ou Spring Tool Suite
 3) Após abrir o projeto, faça build, botão direito do mouse sobre o projeto, depois Run As -> Maven Install.
-4)Para executar o projeto vá em Run -> xy-inc XyIncApplication ou Run As -> Spring Boot App
+4) Para executar o projeto vá em Run -> xy-inc XyIncApplication ou Run As -> Spring Boot App
+
 Após executar o projeto as url estão disponiveis
 
 POST
